@@ -4,6 +4,27 @@ Open `alutrends-homepage.html` after extracting the ZIP. It contains its photos,
 fonts, styles, product carousel, shared cart modules and PNG slip generator.
 There are no runtime asset downloads. Customer reviews are labelled demos.
 
+The supplied SEO copy is native HTML: a hero with one H1, the two illustrated
+collection panels, hardware categories, sliding/casement information, five real
+finish photo previews, trade enquiries, a product-detail gallery, locations,
+nine keyboard-accessible FAQs, About ALUTRENDS and a project enquiry form.
+Animated demo reviews remain alongside the new detail section at the user's
+request. Category controls filter the real carousel without changing the cart's
+complete catalogue. Product photos link to verified individual product pages.
+
+The general project form opens a WhatsApp draft with the entered details; the
+customer must review it and press Send. Company, email, quantity/opening sizes
+and message are optional. Form details are not stored. This form is separate
+from the existing cart checkout and does not generate or send a cart slip.
+
+SEO title, description, canonical and social metadata are set for
+`https://www.alutrends.com`. Organization structured data uses the supplied
+brand and contact number, with no invented ratings, offices or offer prices.
+Core text, FAQs and individual product fallback links remain available without
+JavaScript. If embedding this file in Wix, configure the parent page's SEO
+settings and native content too; an embedded document's metadata does not
+replace its parent page's settings.
+
 The header cart, search and menu open glass dialogs. Each section has an animated
 action button; reduced motion preferences disable decorative animation. Product
 finishes and packs must be selected before adding configured products. Quantities
@@ -62,7 +83,8 @@ cannot be added. Prices and availability are snapshots, not a live inventory
 feed. Some shop pack labels do not establish whether billing is per piece or
 per pack, so totals are labelled estimates and need Alutrends' confirmation.
 
-After editing the four shared JavaScript modules, refresh their inline copies:
+After editing the shared JavaScript modules or homepage content interactions,
+refresh their inline copies:
 
 ```sh
 python3 scripts/build-homepage.py
