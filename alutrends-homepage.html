@@ -231,15 +231,25 @@
     .review-heading .showcase-title { font-size: clamp(35px, 3.5vw, 48px); }
     .review-heading .showcase-title .script { display: block; margin: -2px 0 0; font-size: 1.7em; line-height: 1; }
     .review-intro { max-width: 350px; margin: 20px auto 0; font-size: 14px; line-height: 1.75; color: var(--muted); }
-    .review-preview-note { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; margin: 17px 0 0; border: 1px solid #087C7918; border-radius: 99px; background: #FFFFFF82; color: var(--deep-teal); font-size: 10px; line-height: 1.5; }
+    .review-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin-top: 17px; }
+    .review-preview-note { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; margin: 0; border: 1px solid #087C7918; border-radius: 99px; background: #FFFFFF82; color: var(--deep-teal); font-size: 10px; line-height: 1.5; }
     .review-preview-note::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+    .review-motion-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 7px 11px; border: 1px solid #087C7920; border-radius: 99px; background: #FFFFFF95; color: var(--deep-teal); font-size: 10px; line-height: 1.5; }
+    .review-motion-toggle .icon { width: 13px; height: 13px; }
+    .review-motion-toggle:hover { background: #FFFFFF; }
+    .review-motion-toggle:disabled { opacity: .55; cursor: default; }
     .review-messages { position: absolute; inset: 0; padding: 0; margin: 0; list-style: none; }
-    .review-message { position: absolute; display: flex; align-items: flex-start; gap: 15px; width: 360px; }
-    .review-message:nth-child(1) { top: 83px; left: 5%; }
-    .review-message:nth-child(2) { top: 46px; right: 5%; }
-    .review-message:nth-child(3) { top: 427px; left: 2%; }
-    .review-message:nth-child(4) { top: 600px; left: 50%; transform: translateX(-50%); }
-    .review-message:nth-child(5) { top: 450px; right: 2%; }
+    .review-message { position: absolute; display: flex; align-items: flex-start; gap: 15px; width: 360px; --drift-x: 2px; --drift-y: -6px; animation: review-float 12s ease-in-out infinite; }
+    .review-message:nth-child(1) { top: 83px; left: 5%; animation-delay: -3s; }
+    .review-message:nth-child(2) { top: 46px; right: 5%; --drift-x: -2px; --drift-y: -5px; animation-duration: 14s; animation-delay: -8s; }
+    .review-message:nth-child(3) { top: 427px; left: 2%; --drift-x: 1px; animation-duration: 13s; animation-delay: -5s; }
+    .review-message:nth-child(4) { top: 600px; left: 50%; transform: translateX(-50%); --drift-x: -1px; --drift-y: -5px; animation-duration: 15s; animation-delay: -10s; }
+    .review-message:nth-child(5) { top: 450px; right: 2%; --drift-x: -2px; animation-duration: 11s; animation-delay: -2s; }
+    .review-messages.is-paused .review-message { animation-play-state: paused; }
+    @keyframes review-float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: var(--drift-x) var(--drift-y); }
+    }
     .review-avatar { position: relative; display: grid; place-items: center; width: 71px; height: 71px; margin-top: 16px; flex-shrink: 0; border: 4px solid #FFFFFFE8; border-radius: 50%; background: linear-gradient(140deg, #DAF3E8, #FFF8DC); box-shadow: 0 0 0 1px #087C7915, 0 9px 25px #102F3110; color: #087C79A6; }
     .review-avatar svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
     .review-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
@@ -564,11 +574,14 @@
           <p class="eyebrow">People. Places. Stories.</p>
           <h2 class="showcase-title" id="customer-reviews-title">Customer <span class="script">Reviews</span></h2>
           <p class="review-intro">A little space for our customers’ stories.</p>
-          <p class="review-preview-note">Demo reviews · Final customer stories coming soon</p>
+          <div class="review-controls">
+            <p class="review-preview-note">Demo reviews · Final customer stories coming soon</p>
+            <button class="review-motion-toggle" type="button" data-motion="review" aria-controls="review-messages" aria-pressed="false" aria-label="Pause review animation"><svg class="icon" aria-hidden="true"><use href="#icon-pause"/></svg><span data-motion-label>Pause motion</span></button>
+          </div>
         </header>
         <!-- Demo quotes and names are fictional layout content, requested by the user.
              Replace each icon, message, and author with the supplied customer material later. -->
-        <ul class="review-messages" aria-label="Demo customer reviews">
+        <ul class="review-messages" id="review-messages" aria-label="Demo customer reviews">
           <li class="review-message">
             <span class="review-avatar" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="13" r="6.5"/><path d="M7 34c0-8 5-12 13-12s13 4 13 12"/></svg></span>
             <article class="review-bubble" aria-label="Demo customer review 1">
@@ -992,6 +1005,8 @@ var Swiper=function(){"use strict";function e(e=""){return e.trim().split(" ").f
         control.setAttribute('aria-pressed', String(paused));
         control.setAttribute('aria-label', motionPreference.matches ? `${control.dataset.motion} animation disabled by reduced motion preference` : `${paused ? 'Play' : 'Pause'} ${control.dataset.motion} animation`);
         control.querySelector('use').setAttribute('href', paused ? '#icon-play' : '#icon-pause');
+        const label = control.querySelector('[data-motion-label]');
+        if (label) label.textContent = motionPreference.matches ? 'Motion off' : paused ? 'Play motion' : 'Pause motion';
       }
       for (const control of motionControls) {
         pausedByUser.set(control, false);
