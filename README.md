@@ -30,6 +30,20 @@ action button; reduced motion preferences disable decorative animation. Product
 finishes and packs must be selected before adding configured products. Quantities
 are whole numbers from 1 to 100.
 
+## Header and footer on future pages
+
+The current homepage header and footer are the required shared design for all
+future Alutrends pages. Reuse their markup, styles, responsive layout, motion,
+keyboard accessibility and glass dialogs. Keep the brand at left and the cart,
+search and menu at right, in that order. Do not redesign them independently
+unless the user requests a change.
+
+Keep the same five navigation topics: Products, Railings, Aluminium System
+Windows, About Us and Customer Reviews. The footer keeps the logo at left,
+those links, Contact Alutrends and telephone/WhatsApp links for +91 9306566096.
+Resolve section links correctly from inner pages to the homepage or an existing
+destination. Include the shared cart modules below on every same-origin page.
+
 ## Cart on other pages
 
 Load these scripts in order on **every page of the same origin**:
